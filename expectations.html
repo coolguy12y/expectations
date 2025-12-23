@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Expectations Chaos</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      text-align: center;
+      padding-top: 100px;
+      font-family: sans-serif;
+    }
+    #output {
+      font-size: 96px; /* Bigger text */
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    #output span {
+      margin: 0 4px;
+      display: inline-block;
+      transition: all 0.1s ease;
+    }
+    #controls {
+      margin-bottom: 20px;
+    }
+    input, button {
+      font-size: 24px;
+      padding: 10px;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <input type="text" id="inputWord" placeholder="Type your word">
+    <button onclick="chaos()">Unleash Chaos</button>
+  </div>
+  <div id="output"></div>
+
+  <script>
+    const fonts = [
+      'Arial', 'Courier New', 'Georgia', 'Impact', 'Lucida Console',
+      'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana', 'Comic Sans MS'
+    ];
+
+    let intervalId;
+
+    function chaos() {
+      const word = document.getElementById('inputWord').value;
+      const output = document.getElementById('output');
+      const controls = document.getElementById('controls');
+      output.innerHTML = '';
+
+      // Hide input + button
+      controls.style.display = 'none';
+
+      if (intervalId) clearInterval(intervalId);
+
+      // Create spans for each letter
+      for (let char of word) {
+        const span = document.createElement('span');
+        span.textContent = char;
+        output.appendChild(span);
+      }
+
+      // Continuous mutation every 0.1s
+      intervalId = setInterval(() => {
+        const spans = output.querySelectorAll('span');
+        spans.forEach(span => {
+          const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
+          const baseChar = span.textContent.toLowerCase();
+          const randomCase = Math.random() < 0.5 ? baseChar.toUpperCase() : baseChar.toLowerCase();
+          span.textContent = randomCase;
+          span.style.fontFamily = randomFont;
+        });
+      }, 100);
+    }
+  </script>
+</body>
+</html>
